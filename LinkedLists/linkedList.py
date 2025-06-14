@@ -73,6 +73,67 @@ class LinkedList:
 
         return tmp
 
+    def get(self, index):
+        if index < 0 or index >= self.length:
+            return None
+        temp = self.head
+        for _ in range(index):
+            temp = temp.next
+        return temp
+    
+    def set_value(self, index, value):
+        temp = self.get(index)
+        if temp:
+            temp.value = value
+            return True
+        return False
+    
+    def insert(self, index,value):
+        if index < 0 or index > self.length:
+            return False
+        elif index == 0:
+            return self.prepend(value)
+        elif index == self.length:
+            return self.append(value)
+        else:
+            new_node = Node(value)
+            temp = self.get(index-1)
+            new_node.next = temp.next
+            temp.next = new_node
+            self.length += 1
+            return True
+    
+    def remove(self, index):
+        if index < 0 or index >= self.length:
+            return None
+        elif index == 0:
+            return self.pop_first()
+        elif index == self.length - 1:
+            return self.pop()
+        else:
+            pre = self.get(index - 1)
+            temp = pre.next
+            pre.next = temp.next
+            temp.next = None
+            self.length -= 1
+            return temp
+    
+    def reverse(self):
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        after = temp.next
+        before = None
+        for _ in range(self.length):
+            after = temp.next
+            temp.next = before
+            before = temp
+            temp = after
+        return True
+
+
+        
+
 print("Creating my first Linked List")
 my_ll = LinkedList(4)
 print("Linked list is :", my_ll.head.value)
@@ -121,3 +182,22 @@ my_ll.printList()
 # my_ll1.pop()
 # my_ll1.prepend(5)
 # my_ll1.printList()
+
+print("Get a node from the linked list")
+print(my_ll.get(2))
+
+print("Set a node from the linked list")
+print(my_ll.set_value(2, 3))
+my_ll.printList()
+
+print("Insert a node at an index in the linked list")
+print(my_ll.insert(2, 6))
+my_ll.printList()
+
+print("Remove a node at an index in the linked list")
+print(my_ll.remove(1))
+my_ll.printList()
+
+print("Reversing the linked list")
+print(my_ll.reverse())
+my_ll.printList()
